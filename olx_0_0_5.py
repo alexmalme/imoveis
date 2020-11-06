@@ -180,6 +180,11 @@ class Parametros:
 
 # %%
     def choose_transacao(self):
+        """
+        Funçao para escolha do tipo de transacao.
+        Recebe input do usuario
+        Altera o self.get_transacao
+        """
         transacao = input(
             f'Escolha o tipo de transação: \n'
             f'1: Venda   2: Aluguel: '
@@ -206,6 +211,11 @@ class Parametros:
         
 # %%
     def choose_state(self):
+        """
+        Funçao para escolha do estado.
+        Recebe input do usuario
+        Altera o self.get_state
+        """
         state = input(
             f'Escolha o Estado: \n'
             f'1: RJ  2: SP '
@@ -225,6 +235,11 @@ class Parametros:
 
 # %%
     def choose_city(self):
+        """
+        Funçao para escolha da cidade
+        Recebe input do usuario
+        Altera o self.get_city.
+        """
         city = input(
             f'Escolha a Cidade: \n'
             f'1: Rio de Janeiro  2: São Paulo '
@@ -244,6 +259,12 @@ class Parametros:
 
 # %%
     def choose_zona(self):
+        """
+        Funçao para escolha da zona.
+        Recebe input do usuario
+        Altera o self.get_zona.
+        """
+
         zone = input(
             f'Escolha a zona: \n'
             f'1: Zona Sul  2: Zona Oeste  3: Zona Norte   4: Zona Central'
@@ -266,6 +287,11 @@ class Parametros:
 
 # %%
     def choose_ordem(self):
+        """
+        Funçao para escolha da ordem dos resultados
+        Recebe input do usuario
+        Altera o self.get_ordem.
+        """
         ordem = input(
             f'Escolha a ordem: \n'
             f'Preço: 1, Mais Recentes: 2, Mais Relevantes: 3 '
@@ -285,7 +311,12 @@ class Parametros:
         self.get_ordem = ordem
 
 # %%
-    def choose_pagina(self):            
+    def choose_pagina(self):
+        """
+        Funçao para escolha da pagina
+        Recebe input do usuario
+        Altera o self.get_pagina.
+        """            
         pagina = input("""
         Digite a pagina inicial da pesquisa.
         Use de 1-100\nDefault: 1
@@ -379,9 +410,6 @@ class Urls(Parametros):
          preco_maximo, ordem, pagina)
         self.url_completo = super().get_url_default
 
-    #def gen_url_completo(self, url_compacto, zona, transacao, ordem, preco_minimo, preco_maximo, pagina):
-        #return f"{self.url_compacto}{self.zona}/imoveis/{self.transacao}?{self.ordem}&ps={self.preco_minimo}&pe={self.preco_maximo}&o={self.pagina}"
-    
     @property
     def get_url_completo(self):
         return self.url_completo
@@ -426,7 +454,6 @@ class Urls(Parametros):
         time_today = time.strftime("%Y_%m_%d_%H_%M")
         return time_today
 
-
     # %%
     def quantos_faltam(self, r):
         rt = r.text.split()
@@ -436,7 +463,6 @@ class Urls(Parametros):
              for t in it if t.isnumeric()}
             )
         return qts
-
 
     # %%
     def parse(self, url_completo, url_compacto, count=0):
@@ -503,7 +529,6 @@ class Urls(Parametros):
                                 f'{self.get_preco_minimo}'
                                 )
                             print(f'Esse é o ui: {ui}')
-                            #self.set_preco_minimo(PrecoVenda)
                             preco_mininmo = '&ps=' + str(PrecoVenda)
                             self.set_url_completo(preco_minimo=preco_mininmo, pagina='&o=1')
                             print('Olá')
@@ -540,7 +565,6 @@ class Urls(Parametros):
         except:
             val = ''
         return val
-
 
     # %%
     def cod_anuncio(self, text):
@@ -698,8 +722,6 @@ class Urls(Parametros):
                 if fields['ad']['location']['uf'] == 'RJ' 
                 else fields['ad']['location']['uf']
                 )
-            # facilidades = str([dicionario['page']['adDetail']['home_features'], dicionario['page']['adDetail']['home_complex_features']])
-            #AnuncioFacilidades =self.fnan([fields['ad']['properties'][i]['value'] for i,val in enumerate(fields['ad']['properties']) if val['label'] == 'Detalhes do imÃ³vel'][0]) if [fields['ad']['properties'][i]['value'] for i,val in enumerate(fields['ad']['properties']) if val['label'] == 'Detalhes do imÃ³vel'] != [] else 0
             AnuncioSubTitulo = self.fnan(
                 dicionario['page']['adDetail']['real_estate_type']
                 )
@@ -764,7 +786,6 @@ class Urls(Parametros):
         except:
             print('Deu Erro')
             return None
-
 
     # %%
     def process_item(self, item):    
