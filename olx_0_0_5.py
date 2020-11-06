@@ -181,8 +181,8 @@ class Parametros:
 # %%
     def choose_transacao(self):
         """
-        Funçao para escolha do tipo de transacao.
-        Recebe input do usuario
+        Função para escolha do tipo de transação.
+        Recebe input do usuário
         Altera o self.get_transacao
         """
         transacao = input(
@@ -212,8 +212,8 @@ class Parametros:
 # %%
     def choose_state(self):
         """
-        Funçao para escolha do estado.
-        Recebe input do usuario
+        Função para escolha do estado.
+        Recebe input do usuário
         Altera o self.get_state
         """
         state = input(
@@ -236,8 +236,8 @@ class Parametros:
 # %%
     def choose_city(self):
         """
-        Funçao para escolha da cidade
-        Recebe input do usuario
+        Função para escolha da cidade
+        Recebe input do usuário
         Altera o self.get_city.
         """
         city = input(
@@ -260,8 +260,8 @@ class Parametros:
 # %%
     def choose_zona(self):
         """
-        Funçao para escolha da zona.
-        Recebe input do usuario
+        Função para escolha da zona
+        Recebe input do usuário
         Altera o self.get_zona.
         """
 
@@ -288,8 +288,8 @@ class Parametros:
 # %%
     def choose_ordem(self):
         """
-        Funçao para escolha da ordem dos resultados
-        Recebe input do usuario
+        Função para escolha da ordem dos resultados
+        Recebe input do usuário
         Altera o self.get_ordem.
         """
         ordem = input(
@@ -313,8 +313,8 @@ class Parametros:
 # %%
     def choose_pagina(self):
         """
-        Funçao para escolha da pagina
-        Recebe input do usuario
+        Função para escolha da página
+        Recebe input do usuário
         Altera o self.get_pagina.
         """            
         pagina = input("""
@@ -328,6 +328,12 @@ class Parametros:
 
 # %%
     def choose_preco_minimo(self):
+        """
+        Função para escolha do preço mínimo
+        Recebe input do usuário 
+        Não envia o &ps= para formatação, essa alteração já é realizada no setter
+        Altera o self.get_preco_minimo.
+        """        
         preco_minimo = input(
             'Digite o preço mínimo. Use apenas números: '
             )
@@ -338,6 +344,12 @@ class Parametros:
 
 # %%
     def choose_preco_maximo(self):
+        """
+        Função para escolha do preço máximo
+        Recebe input do usuário 
+        Não envia o &pe= para formatação, essa alteração já é realizada no setter
+        Altera o self.get_preco_maximo.
+        """
         preco_maximo = input(
             '''Digite o preço maximo.
             Use apenas números ou aperte enter para não escolher valor limite: '''
@@ -357,6 +369,10 @@ class Parametros:
 
 # %%
     def escolhe_link(self):
+        """
+        Função que chama as funções de criação do url
+        Criada para organização das chamadas.
+        """
         self.choose_transacao()
         self.choose_state()
         self.choose_city()
@@ -368,6 +384,11 @@ class Parametros:
 
     # %%
     def pergunta_inicial(self):
+        """
+        Primeira função que aparece para o usuário
+        Se o input for 'S', ela ira chamar a função 'escolhe_link', que é
+        uma função construtora.
+        """
         link_inicial = input(
             f'Deseja iniciar a pesquisa no OLX'
             f'com o link padrão:\n {self.get_url_default} (S/N) '
@@ -393,6 +414,9 @@ class Urls(Parametros):
         ordem, 
         pagina
         ):
+        """
+        Igual ao __init__ da classe Parametros
+        """
         self.state = state
         self.start_url = start_url
         self.city = city
@@ -415,12 +439,28 @@ class Urls(Parametros):
         return self.url_completo
 
     def gen_url_completo(self, 
-    url_compacto, 
-    zona, transacao, 
-    ordem, 
-    preco_minimo, 
-    preco_maximo, 
-    pagina):
+                        url_compacto, 
+                        zona, 
+                        transacao, 
+                        ordem, 
+                        preco_minimo, 
+                        preco_maximo, 
+                        pagina
+                        ):
+        """Recebe os parâmetros e retorna uma nova url
+        Altera o valor do self.url_completo
+            url_compacto ([string])
+            zona ([string]): ex: zona-sul
+            transacao ([string]): venda ou aluguel
+            ordem ([string]): ordem dos resultados. 'preco': 'sp=1', 
+                              'mais novos': 'sf=1' e 'mais relevantes': ''
+            preco_minimo ([string]): recebe no formato '&ps=' + numeral, 
+                                     ex: &ps=100000
+            preco_maximo ([string]): recebe no formato '&pe=' + numeral, 
+                                     ex: &pe=100000
+            pagina ([string]): nº da página inicial. recebe no formato
+                               '&o=1'.
+        """
         self.url_completo = (
             f"{url_compacto}"
             f"{zona}/imoveis/"
@@ -440,6 +480,19 @@ class Urls(Parametros):
                         preco_maximo='', 
                         pagina=''
                         ):
+        """
+        Recebe e limpa os valores para a criação do url_completo
+        Chama o self.gen_url_completo
+            
+            Args:
+            url_compacto (str, optional):  Defaults to ''.
+            zona (str, optional):  Defaults to ''.
+            transacao (str, optional):  Defaults to 'venda?'.
+            ordem (str, optional):  Defaults to 'sp=1'.
+            preco_minimo (str, optional):  Defaults to ''.
+            preco_maximo (str, optional):  Defaults to ''.
+            pagina (str, optional):  Defaults to ''.
+        """
         u_compacto = url_compacto if url_compacto != '' else self.url_compacto
         z = zona if zona != '' else self.zona
         t = transacao if transacao != '' else self.transacao
@@ -451,6 +504,13 @@ class Urls(Parametros):
     
     @staticmethod
     def get_time_today():
+        """
+        Função criada para acrescentar a data do dia em:
+        Coluna Data da captura
+        Nome dos arquivos salvos com a data da sua criação
+        Returns:
+            string: no formato '2020_11_05_22_31' (exemplo)
+        """
         time_today = time.strftime("%Y_%m_%d_%H_%M")
         return time_today
 
